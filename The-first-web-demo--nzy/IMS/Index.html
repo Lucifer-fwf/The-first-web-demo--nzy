@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <script src="js/setHomeSetFav.js" charset="gbk"></script>
+    <script src="jquery-3.1.1/jquery-3.1.1.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animate.My.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <script type="text/javascript">
+        window.onload = function () {
+            var box = document.getElementById("all");  //   获得大盒子
+            var ul = box.children[0].children[0];  // 获取ul
+            var ulLis = ul.children;  //  ul 里面的所有  li
+            // 复习：  cloneNode()     克隆节点       追加a.appendChild(b)  把b 放到a 的最后面
+            //1.  ulLis[0].cloneNode(true)  克隆  节点
+            ul.appendChild(ulLis[0].cloneNode(true));   // ul 是 a   ulLis[0].cloneNode(true) 是b
+
+            //2. 插入 ol 里面的li
+            var ol = box.children[1];  // 获得ol
+            // 因为 我们要创建很多个 ol 里面的li 所以需要用到for 循环哦
+            for (var i = 0; i < ulLis.length - 1; i++) {   // ul 里面的li  长度 要减去 1  因为我们克隆一个
+                // 创建节点 li
+                var li = document.createElement("li");
+                li.innerHTML = i + 1;   //  存在加1 的关系
+                // a.appendChild(b);
+                ol.appendChild(li);
+            }
+            var olLis = ol.children;  // 找到 ol 里面的li
+            olLis[0].className = 'current';
+            // 3. 动画部分  遍历小li ol
+            for (var i = 0; i < olLis.length; i++) {
+                olLis[i].index = i;  // 赋予索引号
+                olLis[i].onmouseover = function () {
+                    // 清除所有人
+                    for (var j = 0; j < olLis.length; j++) {
+                        olLis[j].className = "";
+                    }
+                    this.className = 'current';
+                    animate(ul, -this.index * ulLis[0].offsetWidth);
+                    key = square = this.index; // 鼠标经过 key square 要等于 当前的索引号
+                }
+            }
+            // 4. 定时器部分  难点
+            var timer = null;  // 定时器
+            var key = 0; // 用来控制图片的播放的
+            var square = 0;  // 用来控制小方块的
+            timer = setInterval(autoplay, 3000);   // 每隔3s 调用一次 autoplay
+            function autoplay() {
+                key++;   // key == 1  先 ++
+                console.log(key); //  不能超过5
+                if (key > ulLis.length - 1) {
+                    // alert('停下');
+                    ul.style.left = 0;
+                    key = 1;  // 因为第6张就是第一张，我们已经播放完毕了， 下一次播放第2张
+                    // 第2张的索引号是1
+                }
+                animate(ul, -key * ulLis[0].offsetWidth);
+                // 小方块的做法
+                square++;  // 小方块自加1
+                square = square > olLis.length - 1 ? 0 : square;
+                /// 清除所有人
+                for (var i = 0; i < olLis.length; i++) {
+                    olLis[i].className = "";
+                }
+                olLis[square].className = "current";   // 留下当前自己的
+
+            }
+
+
+            // 鼠标经过和停止定时器
+            box.onmouseover = function () {
+                clearInterval(timer);
+            }
+
+            box.onmouseout = function () {
+                timer = setInterval(autoplay, 3000);  // 一定这么开
+            }
+
+
+            //  基本封装
+            function animate(obj, target) {
+                clearInterval(obj.timer);  // 要开启定时器，先清除以前定时器
+                // 有2个参数 第一个 对象谁做动画  第二 距离 到哪里
+                // 如果 offsetLeft 大于了  target 目标位置就应该反方向
+                var speed = obj.offsetLeft < target ? 15 : -15;
+                obj.timer = setInterval(function () {
+                    var result = target - obj.offsetLeft;  //  他们的值 等于 0 说明完全相等
+                    // 动画的原理
+                    obj.style.left = obj.offsetLeft + speed + "px";
+                    if (Math.abs(result) <= 15) {
+                        obj.style.left = target + "px";   //抖动问题
+                        clearInterval(obj.timer);
+                    }
+                }, 10);
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div class="top"></div>
+<div class="wrap">
+    <div class="all" id='all'>
+        <div class="screen">
+            <ul>
+                <li><img src="images/1.jpg" width="990px" height="350px"/></li>
+                <li><img src="images/2.jpg" width="990px" height="350px"/></li>
+                <li><img src="images/3.jpg" width="990px" height="350px"/></li>
+                <li><img src="images/4.jpg" width="990px" height="350px"/></li>
+                <li><img src="images/5.jpg" width="990px" height="350px"/></li>
+            </ul>
+        </div>
+        <ol>
+
+        </ol>
+    </div>
+
+    <div class="message">
+        <div class="message_title">
+            <img src="images/news.png" alt="">
+
+            <span>More >></span>
+
+        </div>
+        <div class="message_news">
+            <ul>
+                <li>
+                    <div class="news_date">
+                        <p class="day">25</p>
+                        <p class="month">2017.02</p>
+
+                    </div>
+                    <div class="news">
+                        <p class="new_title"><a target="_blank"
+                                                href="http://xyw.njucm.edu.cn/s/27/t/7/b7/ac/info47020.htm">中国-世卫组织评估专家组对我校《传统医学纳入国家卫生系统的中国实践及其政策保障研究》...</a>
+                        </p>
+                        <p class="new_content">
+                            2月22日下午，国家卫计委国际合作司国际组织处刘岳处长，中国-世界卫生组织合作项目管理办公室董胜利主任、项目专家吴国高、杨保平，中国疾控中心妇幼保健中心财务处马忠华处长、项目官员辛桐、刘哲言一行7人莅临我校，对我校...</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="news_date">
+                        <p class="day">25</p>
+                        <p class="month">2017.02</p>
+
+                    </div>
+                    <div class="news">
+                        <p class="new_title"><a target="_blank"
+                                                href="http://xyw.njucm.edu.cn/s/27/t/7/b7/ad/info47021.htm">张策华副书记一行赴南京邮电大学调研宣传思想工作</a>
+                        </p>
+                        <p class="new_content">
+                            2月23日，校党委副书记、纪委书记张策华率党委宣传部、党校全体人员赴南京邮电大学调研交流高校宣传思想工作。南京邮电大学党委副书记、纪委书记朱永平，党委宣传部、信息中心负责人和相关工作人员出席座谈会并交流发言。
+                        </p>
+                    </div>
+                </li>
+                <li>
+                    <div class="news_date">
+                        <p class="day">24</p>
+                        <p class="month">2017.02</p>
+
+                    </div>
+                    <div class="news">
+                        <p class="new_title"><a target="_blank"
+                                                href="http://xyw.njucm.edu.cn/s/27/t/7/b7/aa/info47018.htm">翰林学院共青团工作获团中央、团省委以及泰州团市委多项表彰</a>
+                        </p>
+                        <p class="new_content">
+                            在团中央组织开展的高校共青团“活力团支部”创建遴选活动中，中药学1402团支部被评为全国高校“活力团支部”。
+
+                            在2016年度全省共青团工作先进单位及个人评选表彰中，我校翰林学院团委被授予全省共青团工作“先进单位”称号，王晓燕老师... </p>
+                    </div>
+                </li>
+
+
+            </ul>
+
+        </div>
+        <div class="message_title">
+            <img src="images/study.png" alt="">
+
+            <span>More >></span>
+
+        </div>
+
+        <div class="message_news">
+            <ul>
+                <li>
+                    <div class="study_all">
+                        <div class="study_pic">
+                            <a href="http://www.njucm.edu.cn/s/22/t/213/b6/d1/info46801.htm"><img src="images/m1.jpeg" alt=""></a>
+                        </div>
+                        <div class="study">
+                            <a class="study_title" href="http://www.njucm.edu.cn/s/22/t/213/b6/d1/info46801.htm">学术讲座——资源科学与资源循环利用</a>
+
+                            <p class="study_content">
+                                主讲人简介：
+                                <br>
+                                成升魁，研究员，中国自然资源学会理事长，博士生导师，我国著名的资源循环利用学家。
+                                <br>
+                                沈镭，研究员，中国自然资源学会副理事长、秘书长，博士生导师，我国著名的资源生态学家。
+                            </p>
+                        </div>
+                    </div>
+
+
+                </li>
+                <li>
+                    <div class="study_all">
+                        <div class="study_pic">
+                            <a href="http://www.njucm.edu.cn/s/22/t/213/b7/24/info46884.htm"><img src="images/m2.jpeg" alt=""></a>
+                        </div>
+                        <div class="study">
+                            <a class="study_title" href="http://www.njucm.edu.cn/s/22/t/213/b7/24/info46884.htm">学术讲座——大鼠脑功能成像的数据处理</a>
+
+
+                            <p class="study_content">
+                                主讲人简介：<br>聂彬彬，中国科学院高能物理研究所，副研究员，分子影像组课题组长，硕士生导师；中国科学院脑科学与智能创新技术卓越创新中心副研究员；中国研究型医院放射学会青年委员会委员。
+                            </p>
+                        </div>
+                    </div>
+
+
+                </li>
+                <li>
+                    <div class="study_all">
+                        <div class="study_pic">
+                            <a href="http://www.njucm.edu.cn/s/22/t/213/b6/d2/info46802.htm"><img src="images/m3.jpeg" alt=""></a>
+
+                        </div>
+                        <div class="study">
+                            <a class="study_title" href="http://www.njucm.edu.cn/s/22/t/213/b6/d2/info46802.htm">学术讲座——天然产物的仿生全合成</a>
+
+
+                            <p class="study_content">
+                                主讲人简介：<br>
+                                李卫东，理学博士，教授、博士生导师。1989年7月毕业于兰州大学化学系，1993年12月获兰州大学有机化学博士学位。1995年9月～1998年8月间在美国哈佛大学化学和化学生物系师从著名有机化学家、诺贝尔化学奖得主E.
+                                J. Corey教授从事博士后研究。
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<div class="footer">
+
+</div>
+</body>
+</html>

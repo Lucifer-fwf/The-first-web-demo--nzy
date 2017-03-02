@@ -1,0 +1,118 @@
+@charset "gb2312";
+* {
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    list-style: none;
+    border: 0;
+}
+
+body {
+    background: url("../images/lb.png");
+}
+
+.top {
+    width: 100%;
+    height: 27px;
+    background: url(../images/top_bg.jpg) repeat-x;
+}
+
+.top_content {
+    width: 1000px;
+    margin: 0 auto;
+    line-height: 27px;
+}
+
+.top_content li {
+    float: right;
+    list-style-image: url(../images/arrow.jpg);
+    width: 70px;
+}
+
+.top_content a:link, .top_content a:visited {
+    color: #8E8E8E;
+    text-decoration: none;
+}
+
+.top_content a:hover, .top_content a:active {
+    color: #C00;
+    text-decoration: none;
+}
+
+.header {
+    width: 1000px;
+    margin: 0 auto;
+    height: 100px;
+}
+
+.header_left img {
+    float: left;
+
+}
+
+.header_right img {
+    float: right;
+}
+
+
+nav {
+    padding-top: 5px;
+    width: 1000px;
+    margin: 5px auto;
+    text-align: center;
+    background-color: #eeeeee;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 70px;
+
+}
+
+nav a {
+    text-decoration: none;
+    font-size: 18px;
+
+}
+
+/*@font-face {*/
+/*font-family: my;*/
+/*src: url("../fonts/≤©—Û≤› È7000.TTF");*/
+/*}*/
+
+nav a:link, a:visited {
+    color: dodgerblue;
+}
+
+nav a:hover, a:active {
+    color: #CC0000;
+
+}
+
+.wrap {
+    width: 1000px;
+    margin: 0 auto;
+
+    padding-top: 170px;
+}
+
+.footer{
+
+    width: 100%;
+
+    margin: 150px auto;
+    height: 100px;
+    clear: both;
+
+}
+.footer_pic{
+    margin-top: 20px;
+    background: url("../images/foot_line.png") repeat-x;
+    height: 29px;
+}
+.copy{
+    color: darkgrey;
+    padding-top: 100px;
+    text-align: center;
+    line-height: 20px;
+}
